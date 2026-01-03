@@ -3,6 +3,8 @@ using Byte.Core.Entity;
 using Byte.Core.Common.Filters;
 using System.Linq.Expressions;
 using Byte.Core.Common.Extensions;
+using SqlSugar;
+using Byte.Core.Tools;
 
 namespace Byte.Core.Repository
 {
@@ -14,6 +16,18 @@ namespace Byte.Core.Repository
         public RoleRepository(IUnitOfWork unitOfWork) : base(unitOfWork)
         {
         }
+
+
+        public override ISugarQueryable<Role> GetIQueryable(Expression<Func<Role, bool>> where = null, bool needAuth = true)
+        {
+            if (needAuth)
+            {
+                where = where.And(x => CurrentUser.RoleCodes.Contains(x.Code));
+            }
+
+            return base.GetIQueryable(where, needAuth);
+        }
+
 
         public override async Task<int> AddAsync(Role entity)
         {

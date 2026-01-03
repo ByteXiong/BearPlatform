@@ -322,7 +322,7 @@ namespace Byte.Core.Business
             {
 
                 _unitOfWork.RollbackTran();
-                throw new BusException("更新失败", 301);
+                throw new BusException("更新失败", 0);
             }
         }
 
